@@ -1,0 +1,147 @@
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX pub: <http://www.example.edu/publication/>
+
+CONSTRUCT {
+    # Define class (All nodes to defined as classes)
+    pub:Keyword 		rdf:type 	rdfs:Class .
+    pub:Paper 			rdf:type 	rdfs:Class .
+    pub:Author 			rdf:type 	rdfs:Class .
+    pub:Conference 		rdf:type 	rdfs:Class .
+    pub:Workshop 		rdf:type 	rdfs:Class .
+    pub:Journal 		rdf:type 	rdfs:Class .
+    pub:Organization 	rdf:type 	rdfs:Class .
+    
+    
+    # Define super class if needed
+    pub:Person 			rdf:type 	rdfs:Class .
+    
+    # Define relation between subclass and superclass
+    pub:Author 			rdf:subClassOf 	rdfs:Person .
+    
+    
+    # If there are some edges which contain properties, define them as Class
+    pub:cites 			rdf:type 	rdfs:Class .
+    pub:reviewed_by 	rdf:type 	rdfs:Class .
+    pub:written_by 		rdf:type 	rdfs:Class .
+    pub:published_in 	rdf:type 	rdfs:Class .
+    
+        
+    # Define properties (edges without property)
+    pub:has_keyword 	rdf:type 	rdfs:Property ;
+    					rdfs:domain rdf:Paper ;
+    					rdf:range 	rdf:Keyword .
+    
+    pub:affiliated_to 	rdf:type 	rdfs:Property ;
+    					rdf:domain rdf:Author ;
+    					rdf:range rdf:Organization .
+    
+    
+    # Define data type property (Attributes of node)
+    # Properties of Keyword 
+    pub:keyword 	rdfs:domain 	pub:Keyword ;
+        			rdfs:range 		xsd:String ;
+        			rdf:type 		rdfs:Property .
+    
+    # Properties of Paper
+    pub:paper_id 	rdfs:domain 	pub:Paper ;
+        			rdfs:range 		xsd:String ;
+        			rdf:type 		rdfs:Property .
+    
+	pub:title 		rdfs:domain 	pub:Paper ;
+        			rdfs:range 		xsd:String	;
+        			rdf:type 		rdfs:Property .
+        
+    pub:abstract 	rdfs:domain 	pub:Paper ;
+        			rdfs:range 		xsd:String ;
+        			rdf:type 		rdfs:Property .
+        
+    pub:citation_count 		rdfs:domain 	pub:Paper ;
+        					rdfs:range 		xsd:integer;
+        					rdf:type 		rdfs:Property .
+        
+    pub:publication_date 	rdfs:domain 	pub:Paper ;
+        					rdfs:range 		xsd:date;
+        					rdf:type 		rdfs:Property .
+        
+    
+    # Properties of Author
+	pub:author_id 			rdfs:domain 	pub:Author ;
+        					rdfs:range 		xsd:String ;
+        					rdf:type 		rdfs:Property .
+        
+    pub:author_name 		rdfs:domain 	pub:Author ;
+        					rdfs:range 		xsd:String ;
+        					rdf:type 		rdfs:Property .
+        
+    
+    # Properties of Organization
+	pub:org_name 			rdfs:domain 	pub:Organization ;
+        					rdfs:range 		xsd:String ;
+        					rdf:type 		rdfs:Property .
+        
+	pub:org_type 			rdfs:domain 	pub:Organization ;
+        					rdfs:range 		xsd:String ;
+        					rdf:type 		rdfs:Property .
+        
+    # Properties of Conference
+	pub:conf_name 			rdfs:domain 	pub:Conference ;
+        					rdfs:range 		xsd:String ;
+        					rdf:type 		rdfs:Property .
+    
+    # Properties of Workshop
+    pub:journal_name 		rdfs:domain 	pub:Journal ;
+        					rdfs:range 		xsd:String ;
+        					rdf:type 		rdfs:Property .
+    
+    # Properties of Journal
+	pub:workshop_name 		rdfs:domain 	pub:Workshop ;
+        					rdfs:range 		xsd:String ;
+        					rdf:type 		rdfs:Property .
+        
+    
+    # Define properties which are created because of edges having attributes
+    pub:paper_cited 		rdfs:domain 	pub:cites ;
+        					rdfs:range 		pub:Paper;
+        					rdf:type 		rdfs:Property .
+    
+    pub:paper_reviewed 		rdfs:domain 	pub:reviewed_by ;
+        					rdfs:range 		pub:Author;
+        					rdf:type 		rdfs:Property .
+        
+    pub:paper_written 		rdfs:domain	 	pub:written_by ;
+        					rdfs:range 		pub:Author;
+        					rdf:type 		rdfs:Property .
+        
+	pub:paper_published 	rdfs:domain 	pub:published_in ;
+        					rdfs:range 		pub:Conference,pub:Workshop, pub:Journal;
+        					rdf:type 		rdfs:Property .
+    
+    pub:review_count 		rdfs:domain		pub:reviewed_by ;
+            				rdfs:range		xsd:String ;
+    						rdf:type 		rdfs:Property .
+    
+    pub:suggested_decision 	rdfs:domain		pub:reviewed_by ;
+            				rdfs:range		xsd:String ;
+    						rdf:type 		rdfs:Property .
+    
+    pub:is_corresponding_author 	rdfs:domain		pub:written_by ;
+            						rdfs:range		xsd:String ;
+    								rdf:type 		rdfs:Property .
+    
+    pub:volume 	rdfs:domain		pub:published_in ;
+            	rdfs:range		xsd:String ;
+    			rdf:type 		rdfs:Property .
+    
+    pub:year 	rdfs:domain		pub:published_in ;
+            	rdfs:range		xsd:integer ;
+    			rdf:type 		rdfs:Property .
+    
+    pub:edition 	rdfs:domain		pub:published_in ;
+            		rdfs:range		xsd:integer ;
+    				rdf:type 		rdfs:Property .
+}
+WHERE {
+}
+
