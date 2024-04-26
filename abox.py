@@ -26,8 +26,7 @@ def organizations():
         g.add((subject, pub.org_name, org_name_literal))
         g.add((subject, pub.org_type, org_type_literal))
 
-    # Serialize the RDF graph to Turtle format and print
-    print(g.serialize(format="turtle"))
+    return g
 
 
 
@@ -47,8 +46,7 @@ def authors():
         g.add((subject, pub.author_name, author_name_literal))
         g.add((subject, pub.affiliated_org, author_aff_org_literal))
 
-    # Serialize the RDF graph to Turtle format and print
-    print(g.serialize(format="turtle"))
+    return g
 
 
 
@@ -66,8 +64,7 @@ def keywords():
         g.add((subject, predicate, obj))
         g.add((subject, pub.keyword, keyword_literal))
 
-    # Serialize the RDF graph to Turtle format and print
-    print(g.serialize(format="turtle"))
+    return g
 
 
 
@@ -85,8 +82,7 @@ def journals():
         g.add((subject, predicate, obj))
         g.add((subject, pub.journal_name, journal_name_literal))
 
-    # Serialize the RDF graph to Turtle format and print
-    print(g.serialize(format="turtle"))
+    return g
 
 
 
@@ -104,8 +100,7 @@ def workshops():
         g.add((subject, predicate, obj))
         g.add((subject, pub.workshop_name, workshop_name_literal))
 
-    # Serialize the RDF graph to Turtle format and print
-    print(g.serialize(format="turtle"))
+    return g
 
 
 
@@ -123,8 +118,7 @@ def conferences():
         g.add((subject, predicate, obj))
         g.add((subject, pub.conference_name, conference_name_literal))
 
-    # Serialize the RDF graph to Turtle format and print
-    print(g.serialize(format="turtle"))
+    return g
 
 
 
@@ -168,8 +162,7 @@ def conference_paper():
         for reviewer in row["reviewers"].split(","):
             g.add((subject, pub.reviwed_by, URIRef(pub + 'author/'+str(reviewer))))
 
-    # Serialize the RDF graph to Turtle format and print
-    print(g.serialize(format="turtle"))
+    return g
 
 
 def workshop_paper():
@@ -212,8 +205,7 @@ def workshop_paper():
         for reviewer in row["reviewers"].split(","):
             g.add((subject, pub.reviwed_by, URIRef(pub + 'author/'+str(reviewer))))
 
-    # Serialize the RDF graph to Turtle format and print
-    print(g.serialize(format="turtle"))
+    return g
 
 
 
@@ -257,10 +249,18 @@ def journal_paper():
         for reviewer in row["reviewers"].split(","):
             g.add((subject, pub.reviwed_by, URIRef(pub + 'author/'+str(reviewer))))
 
-    # Serialize the RDF graph to Turtle format and print
-    print(g.serialize(format="turtle"))
+    return g
 
 
 if __name__ == "__main__":
-    # keywords()
-    workshop_paper()
+    organization = organizations()
+    author = authors()
+    keyword = keywords()
+    journal = journals()
+    conference = conferences()
+    workshop = workshops()
+    workshop_paper = workshop_paper()
+    journal_paper = journal_paper()
+    conference_paper = conference_paper()
+    kg = organization + author + keyword + journal + conference + workshop + workshop_paper + journal_paper + conference_paper
+    kg.serialize(destination='./output/kg_abox.ttl', format='turtle')
