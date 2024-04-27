@@ -22,9 +22,11 @@ CONSTRUCT {
     
     
     # 4. If there are some edges which contain properties, define them as Class
-    pub:reviewed_by 	rdf:type 	rdfs:Class .
-    pub:written_by 		rdf:type 	rdfs:Class .
-    pub:published_in 	rdf:type 	rdfs:Class .
+    pub:paper_review 		rdf:type 	rdfs:Class .
+    pub:paper_writer 		rdf:type 	rdfs:Class .
+    pub:conf_publication 	rdf:type 	rdfs:Class .
+	pub:workshop_publication 	rdf:type 	rdfs:Class .
+	pub:journal_publication 	rdf:type 	rdfs:Class .
     
 	
     # Define properties (edges without property)
@@ -32,20 +34,27 @@ CONSTRUCT {
     					rdfs:domain rdf:Paper ;
     					rdf:range 	rdf:Paper .
 
-    pub:has_keyword 	rdf:type 	rdfs:Property ;
+    pub:contains 		rdf:type 	rdfs:Property ;
     					rdfs:domain rdf:Paper ;
     					rdf:range 	rdf:Keyword .
     
-    pub:affiliated_to 	rdf:type 	rdfs:Property ;
+    pub:affiliation 	rdf:type 	rdfs:Property ;
     					rdf:domain 	rdf:Author ;
     					rdf:range 	rdf:Organization .
     
+	pub:corresponding_author 	rdf:type 	rdfs:Property ;
+								rdf:domain 	rdf:Author ;
+								rdf:range 	rdf:Paper .
+	
+	pub:writes	rdf:type 	rdfs:Property ;
+				rdf:domain 	rdf:Author ;
+				rdf:range 	rdf:Paper .
     
     # 5. Define data type property (Attributes of node)
     # Properties of Keyword 
-    pub:keyword 	rdfs:domain 	pub:Keyword ;
-        			rdfs:range 		xsd:String ;
-        			rdf:type 		rdfs:Property .
+    pub:keyword_name 	rdfs:domain 	pub:Keyword ;
+        				rdfs:range 		xsd:String ;
+        				rdf:type 		rdfs:Property .
     
     # Properties of Paper
     pub:paper_id 	rdfs:domain 	pub:Paper ;
@@ -121,55 +130,76 @@ CONSTRUCT {
         
     
     # Define properties which are created because of edges having attributes
-    pub:paper_reviewed_by 	rdfs:domain 	pub:reviewed_by ;
+    pub:paper_reviewed 		rdfs:domain 	pub:paper_review ;
         					rdfs:range 		pub:Paper;
         					rdf:type 		rdfs:Property .
 
-	pub:author_reviewed_by 	rdfs:domain 	pub:reviewed_by ;
-        					rdfs:range 		pub:Author;
-        					rdf:type 		rdfs:Property .
-        
-
-    pub:paper_written_by	rdfs:domain	 	pub:written_by ;
-        					rdfs:range 		pub:Paper;
-        					rdf:type 		rdfs:Property .
-
-	pub:paper_written_by	rdfs:domain	 	pub:written_by ;
+	pub:reviwer 			rdfs:domain 	pub:paper_review ;
         					rdfs:range 		pub:Author;
         					rdf:type 		rdfs:Property .
 
-        
-	pub:paper_published_in 	rdfs:domain 	pub:published_in ;
-        					rdfs:range 		pub:Paper;
-        					rdf:type 		rdfs:Property .
+	pub:review_count 		rdfs:domain		pub:paper_review ;
+            				rdfs:range		xsd:String ;
+    						rdf:type 		rdfs:Property .
     
-	pub:cwj_published_in 	rdfs:domain 	pub:published_in ;
-        					rdfs:range 		pub:Conference,pub:Workshop, pub:Journal;
-        					rdf:type 		rdfs:Property .
+    pub:suggested_decision 	rdfs:domain		pub:paper_review ;
+            				rdfs:range		xsd:String ;
+    						rdf:type 		rdfs:Property .
 
-    pub:review_count 		rdfs:domain		pub:reviewed_by ;
-            				rdfs:range		xsd:String ;
-    						rdf:type 		rdfs:Property .
-    
-    pub:suggested_decision 	rdfs:domain		pub:reviewed_by ;
-            				rdfs:range		xsd:String ;
-    						rdf:type 		rdfs:Property .
-    
-    pub:is_corresponding_author 	rdfs:domain		pub:written_by ;
-            						rdfs:range		xsd:String ;
-    								rdf:type 		rdfs:Property .
-    
-    pub:volume 	rdfs:domain		pub:published_in ;
-            	rdfs:range		xsd:String ;
-    			rdf:type 		rdfs:Property .
-    
-    pub:year 	rdfs:domain		pub:published_in ;
-            	rdfs:range		xsd:integer ;
-    			rdf:type 		rdfs:Property .
-    
-    pub:edition 	rdfs:domain		pub:published_in ;
-            		rdfs:range		xsd:integer ;
-    				rdf:type 		rdfs:Property .
+
+
+
+        
+	pub:conf_pub_conference 	rdfs:domain 	pub:conf_publication ;
+        						rdfs:range 		pub:Conference;
+        						rdf:type 		rdfs:Property .
+	
+	pub:conf_pub_paper		 	rdfs:domain 	pub:conf_publication ;
+        						rdfs:range 		pub:Paper;
+        						rdf:type 		rdfs:Property .
+
+	pub:conf_pub_year 			rdfs:domain 	pub:conf_publication ;
+        						rdfs:range 		xsd:INTEGER;
+        						rdf:type 		rdfs:Property .
+	
+	pub:conf_pub_edition		rdfs:domain 	pub:conf_publication ;
+        						rdfs:range 		xsd:INTEGER;
+        						rdf:type 		rdfs:Property .
+
+
+
+	pub:ws_pub_workshop	 		rdfs:domain 	pub:ws_publication ;
+        						rdfs:range 		pub:Workshop;
+        						rdf:type 		rdfs:Property .
+	
+	pub:ws_pub_paper		 	rdfs:domain 	pub:ws_publication ;
+        						rdfs:range 		pub:Paper;
+        						rdf:type 		rdfs:Property .
+
+	pub:ws_pub_year 			rdfs:domain 	pub:ws_publication ;
+        						rdfs:range 		xsd:INTEGER;
+        						rdf:type 		rdfs:Property .
+	
+	pub:ws_pub_edition			rdfs:domain 	pub:ws_publication ;
+        						rdfs:range 		xsd:INTEGER;
+        						rdf:type 		rdfs:Property .		
+
+
+	pub:jr_pub_workshop	 		rdfs:domain 	pub:jr_publication ;
+        						rdfs:range 		pub:Journal;
+        						rdf:type 		rdfs:Property .
+	
+	pub:jr_pub_paper		 	rdfs:domain 	pub:jr_publication ;
+        						rdfs:range 		pub:Paper;
+        						rdf:type 		rdfs:Property .
+
+	pub:jr_pub_year 			rdfs:domain 	pub:jr_publication ;
+        						rdfs:range 		xsd:INTEGER;
+        						rdf:type 		rdfs:Property .
+	
+	pub:jr_pub_volume			rdfs:domain 	pub:jr_publication ;
+        						rdfs:range 		xsd:INTEGER;
+        						rdf:type 		rdfs:Property .	
 }
 WHERE {
 }
