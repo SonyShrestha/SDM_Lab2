@@ -14,7 +14,7 @@ def organizations():
     organization_df = pd.read_csv('./data/organizations.csv')
 
     for index, row in organization_df.iterrows():
-        subject = URIRef(pub + 'organizations/'+str(row['id']))
+        subject = URIRef(pub + 'organization/'+str(row['id']))
         predicate = RDF.type
         obj = pub.organization
 
@@ -34,7 +34,7 @@ def authors():
     author_df = pd.read_csv('./data/authors.csv')
 
     for index, row in author_df.iterrows():
-        subject = URIRef(pub + 'authors/'+str(row['authorId']))
+        subject = URIRef(pub + 'author/'+str(row['authorId']))
         predicate = RDF.type
         obj = pub.author
 
@@ -54,7 +54,7 @@ def keywords():
     keywords_df = pd.read_csv('./data/keywords.csv')
 
     for index, row in keywords_df.iterrows():
-        subject = URIRef(pub + 'keywords/'+row['keywords'].replace(" ","_").lower())
+        subject = URIRef(pub + 'keyword/'+row['keywords'].replace(" ","_").lower())
         predicate = RDF.type
         obj = pub.keyword
         
@@ -72,7 +72,7 @@ def journals():
     journal_df = pd.read_csv('./data/journals.csv')
 
     for index, row in journal_df.iterrows():
-        subject = URIRef(pub + 'journals/'+ str(row['id']))
+        subject = URIRef(pub + 'journal/'+ str(row['id']))
         predicate = RDF.type
         obj = pub.journal
 
@@ -90,7 +90,7 @@ def workshops():
     workshop_df = pd.read_csv('./data/workshops.csv')
 
     for index, row in workshop_df.iterrows():
-        subject = URIRef(pub + 'workshops/' + str(row['id']))
+        subject = URIRef(pub + 'workshop/' + str(row['id']))
         predicate = RDF.type
         obj = pub.workshop
 
@@ -105,10 +105,10 @@ def workshops():
 
 
 def conferences():
-    conference_df = pd.read_csv('./data/workshops.csv')
+    conference_df = pd.read_csv('./data/conferences.csv')
 
     for index, row in conference_df.iterrows():
-        subject = URIRef(pub + 'workshops/' + str(row['id']))
+        subject = URIRef(pub + 'conference/' + str(row['id']))
         predicate = RDF.type
         obj = pub.conference
 
@@ -116,7 +116,7 @@ def conferences():
         
         # Add triples to the RDF graph
         g.add((subject, predicate, obj))
-        g.add((subject, pub.conference_name, conference_name_literal))
+        g.add((subject, pub.conf_name, conference_name_literal))
 
     return g
 
@@ -128,27 +128,21 @@ def conference_paper():
     for index, row in conference_paper_df.iterrows():
         subject = URIRef(pub + 'paper/'+row['paperId'])
         predicate = RDF.type
-        obj = pub.Paper
+        obj = pub.paper
 
         title_literal = Literal(row['title'], datatype = XSD.string)
         abstract_literal = Literal(row['abstract'], datatype = XSD.string)
-        # year_literal = Literal(row['year'], datatype = XSD.int)
         citation_count_literal = Literal(row['citationCount'], datatype = XSD.int)
         publication_date_literal = Literal(row['publicationDate'], datatype = XSD.date)
-        # edition_literal = Literal(row['edition'], datatype = XSD.string)
         
         # Add triples to the RDF graph
         g.add((subject, predicate, obj))
         g.add((subject, pub.title, title_literal))
         g.add((subject, pub.abstract, abstract_literal))
-        # g.add((subject, pub.year, year_literal))
         g.add((subject, pub.citation_count, citation_count_literal))
         g.add((subject, pub.publication_date, publication_date_literal))
         
         g.add((subject, pub.corresponding_author, URIRef(pub + 'author/'+str(row['correspondingAuthorId']))))
-        # g.add((subject, pub.edition, edition_literal))
-
-        # g.add((subject, pub.published_in, URIRef(pub + 'conference/' + str(row['jcwName']))))
 
         for keyword in row["keywords"].split(","):
             g.add((subject, pub.contains, URIRef(pub + 'keyword/'+str(keyword.strip().replace(" ","_").lower()))))
@@ -158,9 +152,6 @@ def conference_paper():
         
         for cited_paper_id in row["citedPaperId"].split(","):
             g.add((subject, pub.cites, URIRef(pub + 'paper/'+str(cited_paper_id))))
-        
-        # for reviewer in row["reviewers"].split(","):
-        #     g.add((subject, pub.reviwed_by, URIRef(pub + 'author/'+str(reviewer))))
 
     return g
 
@@ -184,7 +175,20 @@ def conference_publication():
 
         for author1 in row1["authorId"].split(","):
             subject1 = URIRef(pub + 'paper/'+paper_id1)
+            g.add((subject1, RDF.type, pub.paper))
             g.add((subject1, pub.written_by, URIRef(pub + 'author/'+str(author1))))
+
+    for index1, row1 in conference_paper_df.iterrows():
+        paper_id2 = row1['paperId']
+
+        for idx,reviwer in enumerate(row1["reviewers"].split(",")):
+            review_content = row1['reviews'].split(",")[idx]
+            suggested_decision = row1['review_decision'].split(",")[idx]
+            subject2 = URIRef(pub + 'paper/'+paper_id2+'_'+reviwer)
+            g.add((subject2, RDF.type, pub.paper_review))
+            g.add((subject2, pub.reviwer, URIRef(pub + 'author/'+str(reviwer))))
+            g.add((subject2, pub.review_content, Literal(review_content, datatype = XSD.string)))
+            g.add((subject2, pub.suggested_decision, Literal(suggested_decision, datatype = XSD.string)))
 
     return g
 
@@ -195,26 +199,20 @@ def workshop_paper():
     for index, row in workshop_paper_df.iterrows():
         subject = URIRef(pub + 'paper/'+row['paperId'])
         predicate = RDF.type
-        obj = pub.Paper
+        obj = pub.paper
 
         title_literal = Literal(row['title'], datatype = XSD.string)
         abstract_literal = Literal(row['abstract'], datatype = XSD.string)
-        # year_literal = Literal(row['year'], datatype = XSD.int)
         citation_count_literal = Literal(row['citationCount'], datatype = XSD.int)
         publication_date_literal = Literal(row['publicationDate'], datatype = XSD.date)
-        # edition_literal = Literal(row['edition'], datatype = XSD.string)
         
         # Add triples to the RDF graph
         g.add((subject, predicate, obj))
         g.add((subject, pub.title, title_literal))
         g.add((subject, pub.abstract, abstract_literal))
-        # g.add((subject, pub.year, year_literal))
         g.add((subject, pub.citation_count, citation_count_literal))
         g.add((subject, pub.publication_date, publication_date_literal))
         g.add((subject, pub.corresponding_author, URIRef(pub + 'author/'+str(row['correspondingAuthorId']))))
-        # g.add((subject, pub.edition, edition_literal))
-
-        # g.add((subject, pub.published_in, URIRef(pub + 'workshop/'+ str(row['jcwName']))))
 
         for keyword in row["keywords"].split(","):
             g.add((subject, pub.contains, URIRef(pub + 'keyword/'+str(keyword.strip().replace(" ","_").lower()))))
@@ -225,9 +223,6 @@ def workshop_paper():
         if pd.notna(row['citedPaperId']):
             for cited_paper_id in row["citedPaperId"].split(","):
                 g.add((subject, pub.cites, URIRef(pub + 'paper/'+str(cited_paper_id))))
-        
-        # for reviewer in row["reviewers"].split(","):
-        #     g.add((subject, pub.reviwed_by, URIRef(pub + 'author/'+str(reviewer))))
 
     return g
 
@@ -252,7 +247,20 @@ def workshop_publication():
 
         for author1 in row1["authorId"].split(","):
             subject1 = URIRef(pub + 'paper/'+paper_id1)
+            g.add((subject1, RDF.type, pub.paper))
             g.add((subject1, pub.written_by, URIRef(pub + 'author/'+str(author1))))
+    
+    for index1, row1 in workshop_paper_df.iterrows():
+        paper_id2 = row1['paperId']
+
+        for idx,reviwer in enumerate(row1["reviewers"].split(",")):
+            review_content = row1['reviews'].split(",")[idx]
+            suggested_decision = row1['review_decision'].split(",")[idx]
+            subject2 = URIRef(pub + 'paper/'+paper_id2+'_'+reviwer)
+            g.add((subject2, RDF.type, pub.paper_review))
+            g.add((subject2, pub.reviwer, URIRef(pub + 'author/'+str(reviwer))))
+            g.add((subject2, pub.review_content, Literal(review_content, datatype = XSD.string)))
+            g.add((subject2, pub.suggested_decision, Literal(suggested_decision, datatype = XSD.string)))
 
     return g
 
@@ -263,26 +271,20 @@ def journal_paper():
     for index, row in journal_paper_df.iterrows():
         subject = URIRef(pub + 'paper/'+row['paperId'])
         predicate = RDF.type
-        obj = pub.Paper
+        obj = pub.paper
 
         title_literal = Literal(row['title'], datatype = XSD.string)
         abstract_literal = Literal(row['abstract'], datatype = XSD.string)
-        # year_literal = Literal(row['year'], datatype = XSD.int)
         citation_count_literal = Literal(row['citationCount'], datatype = XSD.int)
         publication_date_literal = Literal(row['publicationDate'], datatype = XSD.date)
-        # journal_volume_literal = Literal(row['journalVolume'], datatype = XSD.string)
         
         # Add triples to the RDF graph
         g.add((subject, predicate, obj))
         g.add((subject, pub.title, title_literal))
         g.add((subject, pub.abstract, abstract_literal))
-        # g.add((subject, pub.year, year_literal))
         g.add((subject, pub.citation_count, citation_count_literal))
         g.add((subject, pub.publication_date, publication_date_literal))
         g.add((subject, pub.corresponding_author, URIRef(pub + 'author/'+str(row['correspondingAuthorId']))))
-        # g.add((subject, pub.journal_volume, journal_volume_literal))
-
-        # g.add((subject, pub.published_in, URIRef(pub + 'journal/' + str(row['jcwName']))))
 
         for keyword in row["keywords"].split(","):
             g.add((subject, pub.conatins, URIRef(pub + 'keyword/'+str(keyword.strip().replace(" ","_").lower()))))
@@ -293,9 +295,6 @@ def journal_paper():
         if pd.notna(row['citedPaperId']):
             for cited_paper_id in row["citedPaperId"].split(","):
                 g.add((subject, pub.cites, URIRef(pub + 'paper/'+str(cited_paper_id))))
-        
-        # for reviewer in row["reviewers"].split(","):
-        #     g.add((subject, pub.reviwed_by, URIRef(pub + 'author/'+str(reviewer))))
 
     return g
 
@@ -319,13 +318,26 @@ def journal_publication():
 
         for author1 in row1["authorId"].split(","):
             subject1 = URIRef(pub + 'paper/'+paper_id1)
+            g.add((subject1, RDF.type, pub.paper))
             g.add((subject1, pub.written_by, URIRef(pub + 'author/'+str(author1))))
+    
+    for index1, row1 in journal_paper_df.iterrows():
+        paper_id2 = row1['paperId']
+
+        for idx,reviwer in enumerate(row1["reviewers"].split(",")):
+            review_content = row1['reviews'].split(",")[idx]
+            suggested_decision = row1['review_decision'].split(",")[idx]
+            subject2 = URIRef(pub + 'paper/'+paper_id2+'_'+reviwer)
+            g.add((subject2, RDF.type, pub.paper_review))
+            g.add((subject2, pub.reviwer, URIRef(pub + 'author/'+str(reviwer))))
+            g.add((subject2, pub.review_content, Literal(review_content, datatype = XSD.string)))
+            g.add((subject2, pub.suggested_decision, Literal(suggested_decision, datatype = XSD.string)))
 
     return g
 
 
 if __name__ == "__main__":
-    organization = journal_publication()
+    organization = organizations()
     author = authors()
     keyword = keywords()
     journal = journals()
@@ -338,7 +350,9 @@ if __name__ == "__main__":
     journal_publication = journal_publication()
     conference_publication = conference_publication()
     kg = organization + author + keyword + journal + conference + workshop + workshop_paper + journal_paper + conference_paper + workshop_publication + journal_publication + conference_publication
-    kg.serialize(destination='./output/kg_abox.ttl', format='turtle')
+    kg.serialize(destination='./output/kg_abox.rdf', format='xml')
+    
+    # g=conference_publication()
 
-    # turtle = organization.serialize(format='turtle')
+    # turtle = g.serialize(format='turtle')
     # print(turtle)
