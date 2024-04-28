@@ -181,12 +181,13 @@ def conference_publication():
     for index1, row1 in conference_paper_df.iterrows():
         paper_id2 = row1['paperId']
 
-        for idx,reviwer in enumerate(row1["reviewers"].split(",")):
+        for idx,reviewer in enumerate(row1["reviewers"].split(",")):
             review_content = row1['reviews'].split(",")[idx]
             suggested_decision = row1['review_decision'].split(",")[idx]
-            subject2 = URIRef(pub + 'paper/'+paper_id2+'_'+reviwer)
+            subject2 = URIRef(pub + 'paper_review/'+paper_id2+'_'+reviewer)
             g.add((subject2, RDF.type, pub.paper_review))
-            g.add((subject2, pub.reviwer, URIRef(pub + 'author/'+str(reviwer))))
+            g.add((subject2, pub.paper_reviewed, URIRef(pub + 'paper/'+str(paper_id2))))
+            g.add((subject2, pub.reviewer, URIRef(pub + 'author/'+str(reviewer))))
             g.add((subject2, pub.review_content, Literal(review_content, datatype = XSD.string)))
             g.add((subject2, pub.suggested_decision, Literal(suggested_decision, datatype = XSD.string)))
 
@@ -253,12 +254,13 @@ def workshop_publication():
     for index1, row1 in workshop_paper_df.iterrows():
         paper_id2 = row1['paperId']
 
-        for idx,reviwer in enumerate(row1["reviewers"].split(",")):
+        for idx,reviewer in enumerate(row1["reviewers"].split(",")):
             review_content = row1['reviews'].split(",")[idx]
             suggested_decision = row1['review_decision'].split(",")[idx]
-            subject2 = URIRef(pub + 'paper/'+paper_id2+'_'+reviwer)
+            subject2 = URIRef(pub + 'paper_review/'+paper_id2+'_'+reviewer)
             g.add((subject2, RDF.type, pub.paper_review))
-            g.add((subject2, pub.reviwer, URIRef(pub + 'author/'+str(reviwer))))
+            g.add((subject2, pub.paper_reviewed, URIRef(pub + 'paper/'+str(paper_id2))))
+            g.add((subject2, pub.reviewer, URIRef(pub + 'author/'+str(reviewer))))
             g.add((subject2, pub.review_content, Literal(review_content, datatype = XSD.string)))
             g.add((subject2, pub.suggested_decision, Literal(suggested_decision, datatype = XSD.string)))
 
@@ -324,12 +326,13 @@ def journal_publication():
     for index1, row1 in journal_paper_df.iterrows():
         paper_id2 = row1['paperId']
 
-        for idx,reviwer in enumerate(row1["reviewers"].split(",")):
+        for idx,reviewer in enumerate(row1["reviewers"].split(",")):
             review_content = row1['reviews'].split(",")[idx]
             suggested_decision = row1['review_decision'].split(",")[idx]
-            subject2 = URIRef(pub + 'paper/'+paper_id2+'_'+reviwer)
+            subject2 = URIRef(pub + 'paper_review/'+paper_id2+'_'+reviewer)
             g.add((subject2, RDF.type, pub.paper_review))
-            g.add((subject2, pub.reviwer, URIRef(pub + 'author/'+str(reviwer))))
+            g.add((subject2, pub.paper_reviewed, URIRef(pub + 'paper/'+str(paper_id2))))
+            g.add((subject2, pub.reviewer, URIRef(pub + 'author/'+str(reviewer))))
             g.add((subject2, pub.review_content, Literal(review_content, datatype = XSD.string)))
             g.add((subject2, pub.suggested_decision, Literal(suggested_decision, datatype = XSD.string)))
 
