@@ -1,0 +1,41 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX : <http://www.example.edu/publication/>
+select distinct ?name {
+    ?author rdf:type :author .
+    ?author :author_name ?name
+}
+
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX : <http://www.example.edu/publication/>
+SELECT distinct ?prop
+WHERE {
+    ?sub rdf:type :author ;
+         ?prop ?obj .
+}
+
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX : <http://www.example.edu/publication/>
+SELECT distinct ?prop
+WHERE {
+    ?sub rdf:type ?type ;
+         ?prop ?obj .
+    FILTER(?type = :conference  || ?type = :journal )
+}
+
+
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX : <http://www.example.edu/publication/>
+SELECT ?paper_title ?author_name
+WHERE {
+	?paper :title ?paper_title .
+    ?paper :written_by ?author .
+    ?author :author_name ?author_name .
+    ?s :conf_pub_paper ?paper . 
+    ?s :conf_pub_conference ?conference .
+    ?conference rdf:type :conference .
+    ?conference :conf_name ?conf_name
+    FILTER(?author_name='Rianne van den Berg')
+}
