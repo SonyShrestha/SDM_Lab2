@@ -39,3 +39,30 @@ WHERE {
     ?conference :conf_name ?conf_name
     FILTER(?author_name='Rianne van den Berg')
 }
+
+
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX : <http://www.example.edu/publication/>
+SELECT ?conf_name (count(distinct(?paper)) AS ?publication_count)
+WHERE {
+    ?s :conf_pub_conference ?conference .
+    ?s :conf_pub_paper ?paper .
+    ?conference :conf_name ?conf_name .
+    ?conference rdf:type :conference .
+}
+GROUP BY ?conf_name
+ORDER BY DESC(?publication_count)
+
+
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX pub: <http://www.example.edu/publication/>
+SELECT ?author (COUNT(?paper) AS ?cnt_paper)
+WHERE {
+    ?paper ^pub:paper_reviewed/pub:reviewer/pub:author_name ?author .
+    ?paper pub:contains/pub:keyword_name ?keyword .
+    FILTER(CONTAINS(LCASE(?keyword), "data"))
+}
+GROUP BY ?author
+HAVING (?cnt_paper>=7)
