@@ -133,11 +133,11 @@ CONSTRUCT {
         						rdf:type 		rdfs:Property .
 
 	pub:conf_pub_year 			rdfs:domain 	pub:conf_publication ;
-        						rdfs:range 		xsd:INTEGER;
+        						rdfs:range 		xsd:integer;
         						rdf:type 		rdfs:Property .
 	
 	pub:conf_pub_edition		rdfs:domain 	pub:conf_publication ;
-        						rdfs:range 		xsd:INTEGER;
+        						rdfs:range 		xsd:integer;
         						rdf:type 		rdfs:Property .
 
 	pub:ws_pub_workshop	 		rdfs:domain 	pub:ws_publication ;
@@ -149,11 +149,11 @@ CONSTRUCT {
         						rdf:type 		rdfs:Property .
 
 	pub:ws_pub_year 			rdfs:domain 	pub:ws_publication ;
-        						rdfs:range 		xsd:INTEGER;
+        						rdfs:range 		xsd:integer;
         						rdf:type 		rdfs:Property .
 	
 	pub:ws_pub_edition			rdfs:domain 	pub:ws_publication ;
-        						rdfs:range 		xsd:INTEGER;
+        						rdfs:range 		xsd:integer;
         						rdf:type 		rdfs:Property .		
 
 	pub:jr_pub_workshop	 		rdfs:domain 	pub:jr_publication ;
@@ -165,11 +165,11 @@ CONSTRUCT {
         						rdf:type 		rdfs:Property .
 
 	pub:jr_pub_year 			rdfs:domain 	pub:jr_publication ;
-        						rdfs:range 		xsd:INTEGER;
+        						rdfs:range 		xsd:integer;
         						rdf:type 		rdfs:Property .
 	
 	pub:jr_pub_volume			rdfs:domain 	pub:jr_publication ;
-        						rdfs:range 		xsd:INTEGER;
+        						rdfs:range 		xsd:integer;
         						rdf:type 		rdfs:Property .	
 }
 WHERE {
