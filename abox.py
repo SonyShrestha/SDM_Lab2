@@ -163,7 +163,7 @@ def conference_publication():
         edition_literal = Literal(row['edition'], datatype = XSD.string)
         year_literal = Literal(row['year'], datatype = XSD.int)
 
-        subject = URIRef(pub + 'conference_publication/'+paper_id+'_'+str(row['jcwName']))
+        subject = URIRef(pub + 'paper='+paper_id+'/conference='+str(row['jcwName']))
         g.add((subject, RDF.type, pub.conf_publication))
         g.add((subject, pub.conf_pub_conference, URIRef(pub + 'conference/'+str(row['jcwName']))))
         g.add((subject, pub.conf_pub_paper, URIRef(pub + 'paper/'+str(paper_id))))
@@ -184,7 +184,7 @@ def conference_publication():
         for idx,reviewer in enumerate(row1["reviewers"].split(",")):
             review_content = row1['reviews'].split(",")[idx]
             suggested_decision = row1['review_decision'].split(",")[idx]
-            subject2 = URIRef(pub + 'paper_review/'+paper_id2+'_'+reviewer)
+            subject2 = URIRef(pub + 'paper='+paper_id2+'/author='+reviewer)
             g.add((subject2, RDF.type, pub.paper_review))
             g.add((subject2, pub.paper_reviewed, URIRef(pub + 'paper/'+str(paper_id2))))
             g.add((subject2, pub.reviewer, URIRef(pub + 'author/'+str(reviewer))))
@@ -236,7 +236,7 @@ def workshop_publication():
         edition_literal = Literal(row['edition'], datatype = XSD.string)
         year_literal = Literal(row['year'], datatype = XSD.int)
 
-        subject = URIRef(pub + 'workshop_publication/'+paper_id+'_'+str(row['jcwName']))
+        subject = URIRef(pub + 'paper='+paper_id+'/workshop='+str(row['jcwName']))
         g.add((subject, RDF.type, pub.ws_publication))
         g.add((subject, pub.ws_pub_conference, URIRef(pub + 'workshop/'+str(row['jcwName']))))
         g.add((subject, pub.ws_pub_paper, URIRef(pub + 'paper/'+str(paper_id))))
@@ -257,7 +257,7 @@ def workshop_publication():
         for idx,reviewer in enumerate(row1["reviewers"].split(",")):
             review_content = row1['reviews'].split(",")[idx]
             suggested_decision = row1['review_decision'].split(",")[idx]
-            subject2 = URIRef(pub + 'paper_review/'+paper_id2+'_'+reviewer)
+            subject2 = URIRef(pub + 'paper='+paper_id2+'/author='+reviewer)
             g.add((subject2, RDF.type, pub.paper_review))
             g.add((subject2, pub.paper_reviewed, URIRef(pub + 'paper/'+str(paper_id2))))
             g.add((subject2, pub.reviewer, URIRef(pub + 'author/'+str(reviewer))))
@@ -308,7 +308,7 @@ def journal_publication():
         volume_literal = Literal(row['journalVolume'], datatype = XSD.string)
         year_literal = Literal(row['year'], datatype = XSD.int)
 
-        subject = URIRef(pub + 'journal_publication/'+paper_id+'_'+str(row['jcwName']))
+        subject = URIRef(pub + 'paper='+paper_id+'/journal='+str(row['jcwName']))
         g.add((subject, RDF.type, pub.jr_publication))
         g.add((subject, pub.jr_pub_conference, URIRef(pub + 'workshop/'+str(row['jcwName']))))
         g.add((subject, pub.jr_pub_paper, URIRef(pub + 'paper/'+str(paper_id))))
@@ -329,7 +329,7 @@ def journal_publication():
         for idx,reviewer in enumerate(row1["reviewers"].split(",")):
             review_content = row1['reviews'].split(",")[idx]
             suggested_decision = row1['review_decision'].split(",")[idx]
-            subject2 = URIRef(pub + 'paper_review/'+paper_id2+'_'+reviewer)
+            subject2 = URIRef(pub + 'paper='+paper_id2+'/author='+reviewer)
             g.add((subject2, RDF.type, pub.paper_review))
             g.add((subject2, pub.paper_reviewed, URIRef(pub + 'paper/'+str(paper_id2))))
             g.add((subject2, pub.reviewer, URIRef(pub + 'author/'+str(reviewer))))
