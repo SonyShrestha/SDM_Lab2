@@ -334,24 +334,24 @@ def journal_publication():
 
 
 if __name__ == "__main__":
-    # organization = organizations()
-    # author = authors()
-    # keyword = keywords()
-    # journal = journals()
-    # conference = conferences()
-    # workshop = workshops()
-    # workshop_paper = workshop_paper()
-    # journal_paper = journal_paper()
-    # conference_paper = conference_paper()
-    # workshop_publication = workshop_publication()
-    # journal_publication = journal_publication()
-    # conference_publication = conference_publication()
-    # kg = organization + author + keyword + journal + conference + workshop + workshop_paper + journal_paper + conference_paper + workshop_publication + journal_publication + conference_publication
-    # kg.serialize(destination='./output/kg_abox.rdf', format='xml')
+    organization = organizations()
+    author = authors()
+    keyword = keywords()
+    journal = journals()
+    conference = conferences()
+    workshop = workshops()
+    workshop_paper = workshop_paper()
+    journal_paper = journal_paper()
+    conference_paper = conference_paper()
+    workshop_publication = workshop_publication()
+    journal_publication = journal_publication()
+    conference_publication = conference_publication()
+    kg = organization + author + keyword + journal + conference + workshop + workshop_paper + journal_paper + conference_paper + workshop_publication + journal_publication + conference_publication
+    kg.serialize(destination='./output/kg_abox.ttl', format='turtle')
     
 
     # g=conference_publication()
-    conference_publication = conference_publication()
-    turtle = conference_publication.serialize(format='turtle')
-    conference_publication.serialize(destination='./output/kg_abox.rdf', format='xml')
-    print(turtle)
+    # conference_publication = conference_publication()
+    # turtle = conference_publication.serialize(format='turtle')
+    # conference_publication.serialize(destination='./output/kg_abox.rdf', format='xml')
+    # print(turtle)
