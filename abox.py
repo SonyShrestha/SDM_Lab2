@@ -159,16 +159,14 @@ def conference_publication():
     conference_paper_df = pd.read_csv('./data/conference_paper.csv')
 
     for index, row in conference_paper_df.iterrows():
-        paper_id = row['paperId']
-        edition_literal = Literal(row['edition'], datatype = XSD.string)
+        paper = URIRef(pub + 'paper/'+str(row['paperId']))
         year_literal = Literal(row['year'], datatype = XSD.int)
+        conference = URIRef(pub + 'conference/'+str(row['jcwName']))        
 
-        subject = URIRef(pub + 'paper='+paper_id+'/conference='+str(row['jcwName']))
-        # g.add((subject, RDF.type, pub.conf_publication))
-        g.add((subject, pub.conf_pub_conference, URIRef(pub + 'conference/'+str(row['jcwName']))))
-        g.add((subject, pub.conf_pub_paper, URIRef(pub + 'paper/'+str(paper_id))))
-        g.add((subject, pub.conf_pub_year, year_literal))
-        g.add((subject, pub.conf_pub_edition, edition_literal))
+        subject = URIRef(pub + 'paper='+str(row['paperId'])+'/edition='+str(row['jcwName']))
+        g.add((subject, pub.conf_year, year_literal))
+        g.add((subject, pub.conf_edition_rel, conference))
+        g.add((subject, pub.conf_edition_paper_rel, paper))
     
     for index1, row1 in conference_paper_df.iterrows():
         paper_id1 = row1['paperId']
@@ -186,8 +184,8 @@ def conference_publication():
             suggested_decision = row1['review_decision'].split(",")[idx]
             subject2 = URIRef(pub + 'paper='+paper_id2+'/author='+reviewer)
             # g.add((subject2, RDF.type, pub.paper_review))
-            g.add((subject2, pub.paper_reviewed, URIRef(pub + 'paper/'+str(paper_id2))))
-            g.add((subject2, pub.reviewer, URIRef(pub + 'author/'+str(reviewer))))
+            g.add((subject2, pub.paper_reviewer_rel, URIRef(pub + 'paper/'+str(paper_id2))))
+            g.add((subject2, pub.reviewed_by, URIRef(pub + 'author/'+str(reviewer))))
             g.add((subject2, pub.review_content, Literal(review_content, datatype = XSD.string)))
             g.add((subject2, pub.suggested_decision, Literal(suggested_decision, datatype = XSD.string)))
 
@@ -232,16 +230,14 @@ def workshop_publication():
     workshop_paper_df = pd.read_csv('./data/workshop_paper.csv')
 
     for index, row in workshop_paper_df.iterrows():
-        paper_id = row['paperId']
-        edition_literal = Literal(row['edition'], datatype = XSD.string)
+        paper = URIRef(pub + 'paper/'+str(row['paperId']))
         year_literal = Literal(row['year'], datatype = XSD.int)
+        workshop = URIRef(pub + 'workshop/'+str(row['jcwName']))  
 
-        subject = URIRef(pub + 'paper='+paper_id+'/workshop='+str(row['jcwName']))
-        # g.add((subject, RDF.type, pub.ws_publication))
-        g.add((subject, pub.ws_pub_conference, URIRef(pub + 'workshop/'+str(row['jcwName']))))
-        g.add((subject, pub.ws_pub_paper, URIRef(pub + 'paper/'+str(paper_id))))
-        g.add((subject, pub.ws_pub_year, year_literal))
-        g.add((subject, pub.ws_pub_edition, edition_literal))
+        subject = URIRef(pub + 'paper='+str(row['paperId'])+'/edition='+str(row['jcwName']))
+        g.add((subject, pub.ws_year, year_literal))
+        g.add((subject, pub.ws_edition_rel, workshop))
+        g.add((subject, pub.ws_edition_paper_rel, paper))
     
     for index1, row1 in workshop_paper_df.iterrows():
         paper_id1 = row1['paperId']
@@ -259,8 +255,8 @@ def workshop_publication():
             suggested_decision = row1['review_decision'].split(",")[idx]
             subject2 = URIRef(pub + 'paper='+paper_id2+'/author='+reviewer)
             # g.add((subject2, RDF.type, pub.paper_review))
-            g.add((subject2, pub.paper_reviewed, URIRef(pub + 'paper/'+str(paper_id2))))
-            g.add((subject2, pub.reviewer, URIRef(pub + 'author/'+str(reviewer))))
+            g.add((subject2, pub.paper_reviewer_rel, URIRef(pub + 'paper/'+str(paper_id2))))
+            g.add((subject2, pub.reviewed_by, URIRef(pub + 'author/'+str(reviewer))))
             g.add((subject2, pub.review_content, Literal(review_content, datatype = XSD.string)))
             g.add((subject2, pub.suggested_decision, Literal(suggested_decision, datatype = XSD.string)))
 
@@ -304,16 +300,14 @@ def journal_publication():
     journal_paper_df = pd.read_csv('./data/journal_paper.csv')
 
     for index, row in journal_paper_df.iterrows():
-        paper_id = row['paperId']
-        volume_literal = Literal(row['journalVolume'], datatype = XSD.string)
+        paper = URIRef(pub + 'paper/'+str(row['paperId']))
         year_literal = Literal(row['year'], datatype = XSD.int)
+        workshop = URIRef(pub + 'journal/'+str(row['jcwName']))  
 
-        subject = URIRef(pub + 'paper='+paper_id+'/journal='+str(row['jcwName']))
-        # g.add((subject, RDF.type, pub.jr_publication))
-        g.add((subject, pub.jr_pub_conference, URIRef(pub + 'workshop/'+str(row['jcwName']))))
-        g.add((subject, pub.jr_pub_paper, URIRef(pub + 'paper/'+str(paper_id))))
-        g.add((subject, pub.jr_pub_year, year_literal))
-        g.add((subject, pub.jr_pub_volume, volume_literal))
+        subject = URIRef(pub + 'paper='+str(row['paperId'])+'/volume='+str(row['jcwName']))
+        g.add((subject, pub.jr_year, year_literal))
+        g.add((subject, pub.jr_edition_rel, workshop))
+        g.add((subject, pub.jr_edition_paper_rel, paper))
     
     for index1, row1 in journal_paper_df.iterrows():
         paper_id1 = row1['paperId']
@@ -331,8 +325,8 @@ def journal_publication():
             suggested_decision = row1['review_decision'].split(",")[idx]
             subject2 = URIRef(pub + 'paper='+paper_id2+'/author='+reviewer)
             # g.add((subject2, RDF.type, pub.paper_review))
-            g.add((subject2, pub.paper_reviewed, URIRef(pub + 'paper/'+str(paper_id2))))
-            g.add((subject2, pub.reviewer, URIRef(pub + 'author/'+str(reviewer))))
+            g.add((subject2, pub.paper_reviewer_rel, URIRef(pub + 'paper/'+str(paper_id2))))
+            g.add((subject2, pub.reviewed_by, URIRef(pub + 'author/'+str(reviewer))))
             g.add((subject2, pub.review_content, Literal(review_content, datatype = XSD.string)))
             g.add((subject2, pub.suggested_decision, Literal(suggested_decision, datatype = XSD.string)))
 
@@ -340,22 +334,24 @@ def journal_publication():
 
 
 if __name__ == "__main__":
-    organization = organizations()
-    author = authors()
-    keyword = keywords()
-    journal = journals()
-    conference = conferences()
-    workshop = workshops()
-    workshop_paper = workshop_paper()
-    journal_paper = journal_paper()
-    conference_paper = conference_paper()
-    workshop_publication = workshop_publication()
-    journal_publication = journal_publication()
-    conference_publication = conference_publication()
-    kg = organization + author + keyword + journal + conference + workshop + workshop_paper + journal_paper + conference_paper + workshop_publication + journal_publication + conference_publication
-    kg.serialize(destination='./output/kg_abox.rdf', format='xml')
+    # organization = organizations()
+    # author = authors()
+    # keyword = keywords()
+    # journal = journals()
+    # conference = conferences()
+    # workshop = workshops()
+    # workshop_paper = workshop_paper()
+    # journal_paper = journal_paper()
+    # conference_paper = conference_paper()
+    # workshop_publication = workshop_publication()
+    # journal_publication = journal_publication()
+    # conference_publication = conference_publication()
+    # kg = organization + author + keyword + journal + conference + workshop + workshop_paper + journal_paper + conference_paper + workshop_publication + journal_publication + conference_publication
+    # kg.serialize(destination='./output/kg_abox.rdf', format='xml')
     
-    # g=conference_publication()
 
-    # turtle = g.serialize(format='turtle')
-    # print(turtle)
+    # g=conference_publication()
+    conference_publication = conference_publication()
+    turtle = conference_publication.serialize(format='turtle')
+    conference_publication.serialize(destination='./output/kg_abox.rdf', format='xml')
+    print(turtle)
