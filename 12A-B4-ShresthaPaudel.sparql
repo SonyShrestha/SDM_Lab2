@@ -1,0 +1,70 @@
+# Find all authors
+PREFIX pub: <http://www.example.edu/publication/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+SELECT distinct ?author_name
+WHERE {
+    ?sub rdf:type pub:author.
+    ?sub pub:author_name ?author_name
+}
+
+
+# Find all properties whose domain is Author
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX pub: <http://www.example.edu/publication/>
+SELECT distinct ?prop
+WHERE {
+    ?prop rdfs:domain pub:author 
+}
+
+
+#  Find all properties whose domain is either Conference or Journal
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX pub: <http://www.example.edu/publication/>
+SELECT distinct ?prop
+WHERE {
+    {
+        ?prop rdfs:domain pub:conference 
+    }
+    union 
+    {
+        ?prop rdfs:domain pub:workshop 
+    }
+}
+
+
+# Find all the papers written by a given author that where published in database conferences
+PREFIX pub: <http://www.example.edu/publication/>
+SELECT ?author_name ?paper_title
+WHERE {
+	?paper pub:title ?paper_title .
+    ?paper pub:written_by/pub:author_name ?author_name .
+    ?conference pub:conf_name ?conf_name .
+    ?conference ^pub:conf_edition_rel/pub:conf_edition_paper_rel ?paper .
+    FILTER(CONTAINS(STR(LCASE(?conf_name)), "database"))
+}
+ORDER BY(?author_name)
+
+
+
+# All conferences with number of papers published in it and provide result in decreasing order of number of publications 
+PREFIX pub: <http://www.example.edu/publication/>
+SELECT ?conf_name (count(distinct(?paper)) AS ?publication_count)
+WHERE {
+    ?conference pub:conf_name ?conf_name .
+    ?conference ^pub:conf_edition_rel/pub:conf_edition_paper_rel ?paper
+}
+GROUP BY ?conf_name
+ORDER BY DESC(?publication_count)
+
+
+
+# All reviewers who reviewed more than 7 papers related to data
+PREFIX pub: <http://www.example.edu/publication/>
+SELECT ?reviewer (COUNT(?paper) AS ?cnt_paper)
+WHERE {
+    ?paper ^pub:paper_reviewer_rel/pub:reviewed_by/pub:reviewer_name ?reviewer .
+    ?paper pub:contains/pub:keyword_name ?keyword .
+    FILTER(CONTAINS(LCASE(?keyword), "data"))
+}
+GROUP BY ?reviewer
+HAVING (?cnt_paper>=7)

@@ -1,0 +1,195 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://www.example.edu/publication/author> a rdfs:Class ;
+    rdfs:subClassOf <http://www.example.edu/publication/person> .
+
+<http://www.example.edu/publication/conf_edition> a rdfs:Class ;
+    rdfs:subPropertyOf <http://www.example.edu/publication/pub_edition> .
+
+<http://www.example.edu/publication/conference> a rdfs:Class .
+
+<http://www.example.edu/publication/journal> a rdfs:Class ;
+    rdfs:subClassOf <http://www.example.edu/publication/publication> .
+
+<http://www.example.edu/publication/jr_volume> a rdfs:Class .
+
+<http://www.example.edu/publication/keyword> a rdfs:Class .
+
+<http://www.example.edu/publication/organization> a rdfs:Class .
+
+<http://www.example.edu/publication/paper> a rdfs:Class .
+
+<http://www.example.edu/publication/person> a rdfs:Class .
+
+<http://www.example.edu/publication/publication> a rdfs:Class .
+
+<http://www.example.edu/publication/reviewer> a rdfs:Class ;
+    rdfs:subClassOf <http://www.example.edu/publication/person> .
+
+<http://www.example.edu/publication/venue> a rdfs:Class ;
+    rdfs:subClassOf <http://www.example.edu/publication/publication> .
+
+<http://www.example.edu/publication/workshop> a rdfs:Class ;
+    rdfs:subClassOf <http://www.example.edu/publication/venue> .
+
+<http://www.example.edu/publication/ws_edition> a rdfs:Class ;
+    rdfs:subPropertyOf <http://www.example.edu/publication/pub_edition> .
+
+<http://www.example.edu/publication/abstract> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/paper> ;
+    rdfs:range xsd:string .
+
+<http://www.example.edu/publication/affiliation> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/author> ;
+    rdfs:range <http://www.example.edu/publication/organization> .
+
+<http://www.example.edu/publication/author_id> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/author> ;
+    rdfs:range xsd:string .
+
+<http://www.example.edu/publication/author_name> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/author> ;
+    rdfs:range xsd:string .
+
+<http://www.example.edu/publication/citation_count> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/paper> ;
+    rdfs:range xsd:integer .
+
+<http://www.example.edu/publication/cites> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/paper> ;
+    rdfs:range <http://www.example.edu/publication/paper> .
+
+<http://www.example.edu/publication/conf_edition_paper_rel> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/conf_edition> ;
+    rdfs:range <http://www.example.edu/publication/paper> ;
+    rdfs:subPropertyOf <http://www.example.edu/publication/pub_edition> .
+
+<http://www.example.edu/publication/conf_edition_rel> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/conf_edition> ;
+    rdfs:range <http://www.example.edu/publication/conference> .
+
+<http://www.example.edu/publication/conf_id> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/conference> ;
+    rdfs:range xsd:integer .
+
+<http://www.example.edu/publication/conf_name> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/conference> ;
+    rdfs:range xsd:string .
+
+<http://www.example.edu/publication/conf_year> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/conf_edition> ;
+    rdfs:range xsd:integer ;
+    rdfs:subPropertyOf <http://www.example.edu/publication/pub_year> .
+
+<http://www.example.edu/publication/conferenece> rdfs:subClassOf <http://www.example.edu/publication/venue> .
+
+<http://www.example.edu/publication/contains> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/paper> ;
+    rdfs:range <http://www.example.edu/publication/keyword> .
+
+<http://www.example.edu/publication/corresponding_author> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/paper> ;
+    rdfs:range <http://www.example.edu/publication/author> ;
+    rdfs:subPropertyOf <http://www.example.edu/publication/written_by> .
+
+<http://www.example.edu/publication/journal_id> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/journal> ;
+    rdfs:range xsd:integer .
+
+<http://www.example.edu/publication/journal_name> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/journal> ;
+    rdfs:range xsd:string .
+
+<http://www.example.edu/publication/jr_edition_paper_rel> rdfs:subPropertyOf <http://www.example.edu/publication/prop_publication> .
+
+<http://www.example.edu/publication/jr_vol_paper_rel> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/jr_volume> ;
+    rdfs:range <http://www.example.edu/publication/paper> .
+
+<http://www.example.edu/publication/jr_vol_rel> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/jr_volume> ;
+    rdfs:range <http://www.example.edu/publication/journal> .
+
+<http://www.example.edu/publication/jr_year> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/jr_volume> ;
+    rdfs:range xsd:integer ;
+    rdfs:subPropertyOf <http://www.example.edu/publication/pub_year> .
+
+<http://www.example.edu/publication/keyword_name> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/keyword> ;
+    rdfs:range xsd:string .
+
+<http://www.example.edu/publication/org_id> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/organization> ;
+    rdfs:range xsd:integer .
+
+<http://www.example.edu/publication/org_name> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/organization> ;
+    rdfs:range xsd:string .
+
+<http://www.example.edu/publication/org_type> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/organization> ;
+    rdfs:range xsd:string .
+
+<http://www.example.edu/publication/paper_id> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/paper> ;
+    rdfs:range xsd:string .
+
+<http://www.example.edu/publication/paper_reviewer_rel> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/paper_review> ;
+    rdfs:range <http://www.example.edu/publication/paper> .
+
+<http://www.example.edu/publication/publication_date> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/paper> ;
+    rdfs:range xsd:date .
+
+<http://www.example.edu/publication/review_content> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/paper_review> ;
+    rdfs:range xsd:string .
+
+<http://www.example.edu/publication/reviewed_by> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/paper_review> ;
+    rdfs:range <http://www.example.edu/publication/reviewer> .
+
+<http://www.example.edu/publication/reviewer_name> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/reviewer> ;
+    rdfs:range xsd:string .
+
+<http://www.example.edu/publication/suggested_decision> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/paper_review> ;
+    rdfs:range xsd:string .
+
+<http://www.example.edu/publication/title> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/paper> ;
+    rdfs:range xsd:string .
+
+<http://www.example.edu/publication/workshop_id> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/workshop> ;
+    rdfs:range xsd:integer .
+
+<http://www.example.edu/publication/workshop_name> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/workshop> ;
+    rdfs:range xsd:string .
+
+<http://www.example.edu/publication/ws_edition_paper_rel> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/ws_edition> ;
+    rdfs:range <http://www.example.edu/publication/paper> ;
+    rdfs:subPropertyOf <http://www.example.edu/publication/pub_edition> .
+
+<http://www.example.edu/publication/ws_edition_rel> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/ws_edition> ;
+    rdfs:range <http://www.example.edu/publication/workshop> .
+
+<http://www.example.edu/publication/ws_year> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/ws_edition> ;
+    rdfs:range xsd:integer ;
+    rdfs:subPropertyOf <http://www.example.edu/publication/pub_year> .
+
+<http://www.example.edu/publication/written_by> a rdf:Property ;
+    rdfs:domain <http://www.example.edu/publication/paper> ;
+    rdfs:range <http://www.example.edu/publication/author> .
+
+<http://www.example.edu/publication/pub_edition> rdfs:subPropertyOf <http://www.example.edu/publication/prop_publication> .
+

@@ -1,0 +1,45 @@
+# Number of classes belonging to namespace http://www.example.edu/publication/
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX pub: <http://www.example.edu/publication/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT (COUNT(DISTINCT ?class) AS ?num_classes)
+WHERE {
+    ?class rdf:type rdfs:Class .
+    FILTER(STRSTARTS(STR(?class), "http://www.example.edu/publication/"))
+}
+
+
+# Number of property belonging to namespace http://www.example.edu/publication/
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX pub: <http://www.example.edu/publication/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT  (COUNT(DISTINCT ?prop) AS ?num_prop)
+WHERE {
+    ?prop rdf:type rdf:Property
+    FILTER(STRSTARTS(STR(?prop), "http://www.example.edu/publication/"))
+}
+
+
+
+# Number of instances per class 
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX pub: <http://www.example.edu/publication/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT   ?class (count(?instance) as ?num_instance)
+WHERE {
+    ?instance rdf:type ?class 
+    FILTER(STRSTARTS(STR(?class), "http://www.example.edu/publication/"))
+}
+group by ?class
+
+
+# Number of triples for all properties 
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX pub: <http://www.example.edu/publication/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT   ?p (count(*) as ?num_triples)
+WHERE {
+    ?s ?p ?o .
+    FILTER(STRSTARTS(STR(?p), "http://www.example.edu/publication/"))
+}
+group by ?p
