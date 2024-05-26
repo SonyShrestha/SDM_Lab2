@@ -27,23 +27,22 @@ WHERE {
     }
     union 
     {
-        ?prop rdfs:domain pub:workshop 
+        ?prop rdfs:domain pub:journal 
     }
 }
 
 
 # Find all the papers written by a given author that where published in database conferences
 PREFIX pub: <http://www.example.edu/publication/>
-SELECT ?author_name ?paper_title
+SELECT ?paper_title
 WHERE {
 	?paper pub:title ?paper_title .
     ?paper pub:written_by/pub:author_name ?author_name .
     ?conference pub:conf_name ?conf_name .
     ?conference ^pub:conf_edition_rel/pub:conf_edition_paper_rel ?paper .
     FILTER(CONTAINS(STR(LCASE(?conf_name)), "database"))
+    FILTER(?author_name='A. Bonifati')
 }
-ORDER BY(?author_name)
-
 
 
 # All conferences with number of papers published in it and provide result in decreasing order of number of publications 
