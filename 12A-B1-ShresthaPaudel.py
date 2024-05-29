@@ -10,19 +10,7 @@ pub = Namespace("http://www.example.edu/publication/")
 # Create an empty graph
 g = Graph()
 
-# Add triples to the graph
-g.add((pub.keyword, RDF.type, RDFS.Class))
-g.add((pub.paper, RDF.type, RDFS.Class))
-g.add((pub.author, RDF.type, RDFS.Class))
-g.add((pub.conference, RDF.type, RDFS.Class))
-g.add((pub.workshop, RDF.type, RDFS.Class))
-g.add((pub.journal, RDF.type, RDFS.Class))
-g.add((pub.organization, RDF.type, RDFS.Class))
-g.add((pub.person, RDF.type, RDFS.Class))
-g.add((pub.reviewer, RDF.type, RDFS.Class))
-g.add((pub.venue, RDF.type, RDFS.Class))
-g.add((pub.publication, RDF.type, RDFS.Class))
-
+# Add triples to the graphs
 g.add((pub.reviewer, RDFS.subClassOf, pub.person))
 g.add((pub.author, RDFS.subClassOf, pub.person))
 g.add((pub.conferenece, RDFS.subClassOf, pub.venue))
@@ -192,6 +180,18 @@ g.add((pub.ws_edition_paper_rel, RDFS.subPropertyOf, pub.pub_edition))
 
 g.add((pub.jr_edition_paper_rel, RDFS.subPropertyOf, pub.prop_publication))
 g.add((pub.pub_edition, RDFS.subPropertyOf, pub.prop_publication))
+
+g.add((pub.keyword, RDF.type, RDFS.Class))
+g.add((pub.paper, RDF.type, RDFS.Class))
+g.add((pub.author, RDF.type, RDFS.Class))
+g.add((pub.conference, RDF.type, RDFS.Class))
+g.add((pub.workshop, RDF.type, RDFS.Class))
+g.add((pub.journal, RDF.type, RDFS.Class))
+g.add((pub.organization, RDF.type, RDFS.Class))
+g.add((pub.person, RDF.type, RDFS.Class))
+g.add((pub.reviewer, RDF.type, RDFS.Class))
+g.add((pub.venue, RDF.type, RDFS.Class))
+g.add((pub.publication, RDF.type, RDFS.Class))
 
 # Serialize the graph to RDF/XML format
 g.serialize(destination='./output/12A-B1-ShresthaPaudel.ttl', format='turtle')
